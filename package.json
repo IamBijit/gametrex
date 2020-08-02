@@ -2,7 +2,7 @@
   "name": "autorssbot",
   "version": "1.0.2",
   "description": "Integrate posts from reddits ramdomly",
-  "main": "autopost.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +18,7 @@
     "ms": "^2.1.2",
     "request": "^2.88.2",
     "valid-url": "^1.0.9",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "dotenv": "^8.2.0"
   }
 }
