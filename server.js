@@ -197,6 +197,83 @@ setInterval(() => {
         });
     }
 }, 30 * 1000); // 30 seconds
+
+//Game Act
+const rGameAct = `https://www.reddit.com/r/RandomActsOfGaming/new.json?limit=10`;
+setInterval(() => {
+    if (botReady) {
+        request({
+            url: rGameAct,
+            json: true,
+        }, (error, response, body) => {
+            if (!error && response.statusCode === 200) {
+                logger.debug('Request succeeded, lastTimestamp = ', lastTimestamp);
+                for (const post of body.data.children.reverse()) {
+                    if (lastTimestamp <= post.data.created_utc) {
+                        lastTimestamp = post.data.created_utc;
+
+                        const embed = new Discord.MessageEmbed();
+                        embed.setColor('#ff1f4f');
+                        embed.setTitle(`${post.data.link_flair_text ? `[${post.data.link_flair_text}] ` : ''}${entities.decodeHTML(post.data.title)}`);
+                        embed.setURL(`https://redd.it/${post.data.id}`);
+                        embed.setDescription(`${post.data.is_self ? entities.decodeHTML(post.data.selftext.length > 253 ? post.data.selftext.slice(0, 253).concat('...') : post.data.selftext) : ''}`);
+                        embed.setThumbnail(validUrl.isUri(post.data.thumbnail) ? entities.decodeHTML(post.data.thumbnail) : null);
+                        embed.setFooter(`${post.data.is_self ? 'self post' : 'link post'} by ${post.data.author}`);
+                        embed.setTimestamp(new Date(post.data.created_utc * 1000));
+
+                        Channel.send(embed).then(() => {
+                            logger.debug(`Sent message for new post https://redd.it/${post.data.id}`);
+                        }).catch(err => {
+                            logger.error(embed, err);
+                        });
+                    }
+                }
+                ++lastTimestamp;
+            } else {
+                logger.warn('Request failed - reddit could be down or subreddit doesn\'t exist. Will continue.');
+                logger.debug(response, body);
+            }
+        });
+    }
+}, 30 * 1000); // 30 seconds
+//steam giveaways
+const rSteam = `https://www.reddit.com/r/steam_giveaway/new.json?limit=10`;
+setInterval(() => {
+    if (botReady) {
+        request({
+            url: rSteam,
+            json: true,
+        }, (error, response, body) => {
+            if (!error && response.statusCode === 200) {
+                logger.debug('Request succeeded, lastTimestamp = ', lastTimestamp);
+                for (const post of body.data.children.reverse()) {
+                    if (lastTimestamp <= post.data.created_utc) {
+                        lastTimestamp = post.data.created_utc;
+
+                        const embed = new Discord.MessageEmbed();
+                        embed.setColor('#ff1f4f');
+                        embed.setTitle(`${post.data.link_flair_text ? `[${post.data.link_flair_text}] ` : ''}${entities.decodeHTML(post.data.title)}`);
+                        embed.setURL(`https://redd.it/${post.data.id}`);
+                        embed.setDescription(`${post.data.is_self ? entities.decodeHTML(post.data.selftext.length > 253 ? post.data.selftext.slice(0, 253).concat('...') : post.data.selftext) : ''}`);
+                        embed.setThumbnail(validUrl.isUri(post.data.thumbnail) ? entities.decodeHTML(post.data.thumbnail) : null);
+                        embed.setFooter(`${post.data.is_self ? 'self post' : 'link post'} by ${post.data.author}`);
+                        embed.setTimestamp(new Date(post.data.created_utc * 1000));
+
+                        Channel.send(embed).then(() => {
+                            logger.debug(`Sent message for new post https://redd.it/${post.data.id}`);
+                        }).catch(err => {
+                            logger.error(embed, err);
+                        });
+                    }
+                }
+                ++lastTimestamp;
+            } else {
+                logger.warn('Request failed - reddit could be down or subreddit doesn\'t exist. Will continue.');
+                logger.debug(response, body);
+            }
+        });
+    }
+}, 30 * 1000); // 30 seconds
 function onExit(error) {
     logger.info('Logging out before exiting');
     bot.destroy();
