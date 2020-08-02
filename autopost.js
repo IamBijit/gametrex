@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Discord = require('discord.js');
 const request = require('request');
 const entities = require('entities');
@@ -50,14 +51,14 @@ fs.readdir("./commands/", (err, files) => {
     const activities_list = [
         `Its ${bot.user.username}`,
         "Integrating post...",
-        "Game Tracking",
+        "Tracking...",
         "Fetching Data..",
         "?help"
     ];
     setInterval(() => {
         const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1
         bot.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
-      }, 10000); 
+      }, 100000); 
   
     bot.on("message", async message => {
       if (message.author.bot) return;
@@ -87,7 +88,7 @@ fs.readdir("./commands/", (err, files) => {
   })
 
 
-bot.login(config.Tokken);
+bot.login(process.env.BOT_TOKKEN);
 
 let botReady = false;
 let lastTimestamp = Math.floor(Date.now() / 1000);
@@ -97,9 +98,9 @@ let Channel;
 bot.on('ready', () => {
     // bot.user.setStatus('online', `Spamming F5 on /r/${process.env.SUBREDDIT}`).then(logger.info('Changed status!')).catch('ready failed to change status', logger.error); // if you want to change the status of the bot and set the game playing to something specific you may uncomment this
 
-    Guild = bot.guilds.cache.get(config.Server_ID);
+    Guild = bot.guilds.cache.get(process.env.SERVER_ID);
     if (Guild) {
-        Channel = Guild.channels.cache.get(config.Channel_ID);
+        Channel = Guild.channels.cache.get(process.env.CHANNEL_ID);
     }
 
     if (!Channel) {
