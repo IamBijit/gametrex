@@ -1,0 +1,23 @@
+{
+  "name": "autorssbot",
+  "version": "1.0.2",
+  "description": "Integrate posts from reddits ramdomly",
+  "main": "autopost.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Biswa",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "beautify": "0.0.8",
+    "cheerio": "^1.0.0-rc.3",
+    "discord-giveaways": "^4.2.1",
+    "discord.js": "^12.2.0",
+    "entities": "^2.0.3",
+    "ms": "^2.1.2",
+    "request": "^2.88.2",
+    "valid-url": "^1.0.9",
+    "winston": "^3.3.3"
+  }
+}
